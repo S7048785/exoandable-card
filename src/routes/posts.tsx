@@ -22,28 +22,26 @@ function RouteComponent() {
               >
                 <motion.div layoutId={`image-${card.id}`}>
                   <img
-                    width={100}
-                    height={100}
                     src={card.src}
                     alt={card.title}
-                    className="h-60 w-full rounded-lg object-cover object-top"
+                    className="rounded-lg object-cover object-top"
                   />
                 </motion.div>
-                <div className="flex justify-center items-center flex-col mt-4">
-                  <motion.h3
-                    layoutId={`title-${card.id}`}
-                    className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base"
-                  >
-                    {card.title}
-                  </motion.h3>
-                  <motion.p
-                    layoutId={`description-${card.id}`}
-                    className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base mt-1"
-                  >
-                    {card.description}
-                  </motion.p>
-                </div>
               </motion.div>
+              <div className="flex justify-center items-center flex-col mt-4">
+                <h3
+                  // layoutId={`title-${card.id}`}
+                  className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base"
+                >
+                  {card.title}
+                </h3>
+                <p
+                  // layoutId={`description-${card.id}`}
+                  className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base mt-1"
+                >
+                  {card.description}
+                </p>
+              </div>
             </Link>
           </li>
         ))}

@@ -21,29 +21,25 @@ function PostDetail() {
 
       <motion.div
         layoutId={`card-${card.id}`}
-        className="relative bg-white dark:bg-neutral-900 rounded-2xl overflow-hidden max-w-2xl w-full mx-4 max-h-[90vh] overflow-auto"
+        className="relative overflow-auto bg-white dark:bg-neutral-900 rounded-2xl max-w-2xl w-full mx-4 max-h-[80vh] flex"
       >
-        <motion.div layoutId={`image-${card.id}`} className="w-full">
-          <img
-            src={card.src}
-            alt={card.title}
-            className="w-full h-80 object-cover object-top"
-          />
+        <motion.div layoutId={`image-${card.id}`}>
+          <img src={card.src} alt={card.title} className=" rounded-xl " />
         </motion.div>
 
         <div className="p-6">
-          <motion.h3
-            layoutId={`title-${card.id}`}
+          <h3
+            // layoutId={`title-${card.id}`}
             className="font-medium text-neutral-800 dark:text-neutral-200 text-2xl mb-2"
           >
             {card.title}
-          </motion.h3>
-          <motion.p
-            layoutId={`description-${card.id}`}
+          </h3>
+          <p
+            // layoutId={`description-${card.id}`}
             className="text-neutral-600 dark:text-neutral-400 text-lg mb-4"
           >
             {card.description}
-          </motion.p>
+          </p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
