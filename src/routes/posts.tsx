@@ -4,7 +4,6 @@ import { motion } from 'motion/react'
 export const Route = createFileRoute('/posts')({
   component: RouteComponent,
 })
-
 function RouteComponent() {
   return (
     <div className="max-w-2xl mx-auto w-full p-4">
@@ -17,37 +16,34 @@ function RouteComponent() {
               className="cursor-pointer block"
             >
               <motion.div
-                layoutId={`card-${card.id}`}
-                className="p-4 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl"
+                layoutId={`card-${card.title}`}
+                key={card.title}
+                className="p-4 flex flex-col  hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
               >
-                <motion.div layoutId={`image-${card.id}`}>
-                  <img
-                    src={card.src}
-                    alt={card.title}
-                    className="rounded-lg object-cover object-top"
-                  />
-                </motion.div>
+                <div className="flex gap-4 flex-col  w-full">
+                  <motion.div layoutId={`image-${card.title}`}>
+                    <img
+                      width={100}
+                      height={100}
+                      src={card.src}
+                      alt={card.title}
+                      className="h-60 w-full  rounded-lg object-cover object-top"
+                    />
+                  </motion.div>
+                  <div className="flex justify-center items-center flex-col">
+                    <h3 className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base">
+                      {card.title}
+                    </h3>
+                    <p className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base">
+                      {card.description}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
-              <div className="flex justify-center items-center flex-col mt-4">
-                <h3
-                  // layoutId={`title-${card.id}`}
-                  className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base"
-                >
-                  {card.title}
-                </h3>
-                <p
-                  // layoutId={`description-${card.id}`}
-                  className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base mt-1"
-                >
-                  {card.description}
-                </p>
-              </div>
             </Link>
           </li>
         ))}
       </ul>
-
-      {/* 渲染详情页 Modal */}
       <Outlet />
     </div>
   )
