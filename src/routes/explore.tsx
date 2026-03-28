@@ -2,6 +2,7 @@ import {
   createFileRoute,
   useMatchRoute,
   useNavigate,
+  useRouter,
 } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -33,6 +34,7 @@ function clamp(value: number, min: number, max: number) {
 
 function RouteComponent() {
   const navigate = useNavigate()
+  const router = useRouter()
   const matchRoute = useMatchRoute()
   const detailMatch = matchRoute({ to: '/explore/$id' })
   const activeItem = detailMatch
@@ -41,6 +43,7 @@ function RouteComponent() {
 
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const closeTimeoutRef = useRef<number | null>(null)
+  const isOpeningRef = useRef(false)
   const [overlayItem, setOverlayItem] = useState<ExploreItem | null>(null)
   const [originRect, setOriginRect] = useState<RectLike | null>(null)
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
@@ -82,11 +85,35 @@ function RouteComponent() {
 
   useEffect(() => {
     if (!activeItem) {
+      if (isOpeningRef.current) {
+        return
+      }
+
+      if (overlayItem && !isClosing) {
+        setIsClosing(true)
+
+        if (closeTimeoutRef.current !== null) {
+          window.clearTimeout(closeTimeoutRef.current)
+        }
+
+        closeTimeoutRef.current = window.setTimeout(() => {
+          setOverlayItem(null)
+          setIsClosing(false)
+          closeTimeoutRef.current = null
+        }, 420)
+      }
+
       return
+    }
+
+    if (closeTimeoutRef.current !== null) {
+      window.clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
     }
 
     setOverlayItem(activeItem)
     setIsClosing(false)
+    isOpeningRef.current = false
 
     const frame = window.requestAnimationFrame(() => {
       const node = cardRefs.current[activeItem.id]
@@ -104,7 +131,7 @@ function RouteComponent() {
     })
 
     return () => window.cancelAnimationFrame(frame)
-  }, [activeItem])
+  }, [activeItem, isClosing, overlayItem])
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -173,6 +200,7 @@ function RouteComponent() {
       width: rect.width,
       height: rect.height,
     })
+    isOpeningRef.current = true
     setOverlayItem(item)
     setIsClosing(false)
 
@@ -181,7 +209,11 @@ function RouteComponent() {
       closeTimeoutRef.current = null
     }
 
-    void navigate({ to: '/explore/$id', params: { id: item.id } })
+    void navigate({
+      to: '/explore/$id',
+      params: { id: item.id },
+      resetScroll: false,
+    })
   }
 
   function handleClose() {
@@ -189,18 +221,12 @@ function RouteComponent() {
       return
     }
 
-    setIsClosing(true)
+    isOpeningRef.current = false
 
-    if (closeTimeoutRef.current !== null) {
-      window.clearTimeout(closeTimeoutRef.current)
-    }
-
-    closeTimeoutRef.current = window.setTimeout(() => {
-      setOverlayItem(null)
-      setIsClosing(false)
-      closeTimeoutRef.current = null
-      void navigate({ to: '/explore' })
-    }, 420)
+    void navigate({
+      to: '/explore',
+      resetScroll: false,
+    })
   }
 
   const activeOverlay =
