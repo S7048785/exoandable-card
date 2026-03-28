@@ -2,7 +2,6 @@ import {
   createFileRoute,
   useMatchRoute,
   useNavigate,
-  useRouter,
 } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -34,9 +33,9 @@ function clamp(value: number, min: number, max: number) {
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const router = useRouter()
   const matchRoute = useMatchRoute()
   const detailMatch = matchRoute({ to: '/explore/$id' })
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const activeItem = detailMatch
     ? (exploreItems.find((item) => item.id === detailMatch.id) ?? null)
     : null
@@ -235,7 +234,7 @@ function RouteComponent() {
 
   return (
     <main className="page-wrap px-4 pb-10 pt-8 hide-scrollbar">
-      <div className="mb-6 flex flex-wrap gap-3 text-sm text-[var(--sea-ink-soft)]">
+      <div className="mb-6 flex flex-wrap gap-3 text-sm text-(--sea-ink-soft)">
         {[
           '穿搭',
           '美食',
@@ -249,7 +248,7 @@ function RouteComponent() {
         ].map((tag) => (
           <span
             key={tag}
-            className="rounded-full border border-[var(--line)] bg-white/60 px-4 py-2"
+            className="rounded-full border border-(--line) bg-white/60 px-4 py-2"
           >
             {tag}
           </span>
@@ -282,10 +281,10 @@ function RouteComponent() {
                   />
                 </div>
                 <div className="px-4 pb-4 pt-3 bg-white/85 ">
-                  <h2 className="line-clamp-2 text-base font-semibold text-[var(--sea-ink)]">
+                  <h2 className="line-clamp-2 text-base font-semibold text-(--sea-ink)">
                     {item.title}
                   </h2>
-                  <div className="mt-3 flex items-center justify-between text-sm text-[var(--sea-ink-soft)]">
+                  <div className="mt-3 flex items-center justify-between text-sm text-(--sea-ink-soft)">
                     <span>{item.author}</span>
                     <span>{item.subtitle}</span>
                   </div>
@@ -298,7 +297,7 @@ function RouteComponent() {
 
       <AnimatePresence initial={false}>
         {activeOverlay ? (
-          <div className="fixed inset-0 z-[200]">
+          <div className="fixed inset-0 z-200">
             <motion.button
               type="button"
               aria-label="Close detail"
@@ -312,34 +311,34 @@ function RouteComponent() {
 
             <motion.div
               initial={{
-                top: originRect.top,
-                left: originRect.left,
-                width: originRect.width,
-                height: originRect.height,
+                top: originRect?.top,
+                left: originRect?.left,
+                width: originRect?.width,
+                height: originRect?.height,
                 borderRadius: 28,
               }}
               animate={
                 isClosing
                   ? {
-                      top: originRect.top,
-                      left: originRect.left,
-                      width: originRect.width,
-                      height: originRect.height,
+                      top: originRect?.top,
+                      left: originRect?.left,
+                      width: originRect?.width,
+                      height: originRect?.height,
                       borderRadius: 28,
                     }
                   : {
-                      top: targetLayout.top,
-                      left: targetLayout.left,
-                      width: targetLayout.width,
-                      height: targetLayout.height,
+                      top: targetLayout?.top,
+                      left: targetLayout?.left,
+                      width: targetLayout?.width,
+                      height: targetLayout?.height,
                       borderRadius: 32,
                     }
               }
               exit={{
-                top: originRect.top,
-                left: originRect.left,
-                width: originRect.width,
-                height: originRect.height,
+                top: originRect?.top,
+                left: originRect?.left,
+                width: originRect?.width,
+                height: originRect?.height,
                 borderRadius: 28,
               }}
               transition={{
@@ -349,19 +348,19 @@ function RouteComponent() {
               className="absolute overflow-hidden bg-white shadow-[0_24px_80px_rgba(15,23,42,0.2)] dark:bg-neutral-900"
             >
               <div
-                className={`flex h-full w-full ${targetLayout.isMobile ? 'flex-col' : 'flex-row'}`}
+                className={`flex h-full w-full ${targetLayout?.isMobile ? 'flex-col' : 'flex-row'}`}
               >
                 <motion.div
                   initial={false}
                   animate={
                     isClosing
                       ? {
-                          width: originRect.width,
-                          height: originRect.height,
+                          width: originRect?.width,
+                          height: originRect?.height,
                         }
                       : {
-                          width: targetLayout.imageWidth,
-                          height: targetLayout.imageHeight,
+                          width: targetLayout?.imageWidth,
+                          height: targetLayout?.imageHeight,
                         }
                   }
                   transition={{
@@ -380,7 +379,7 @@ function RouteComponent() {
                 <motion.div
                   initial={false}
                   animate={
-                    targetLayout.isMobile
+                    targetLayout?.isMobile
                       ? isClosing
                         ? {
                             height: 0,
@@ -396,7 +395,7 @@ function RouteComponent() {
                             opacity: 0,
                           }
                         : {
-                            width: targetLayout.panelWidth,
+                            width: targetLayout?.panelWidth,
                             opacity: 1,
                           }
                   }
@@ -420,19 +419,19 @@ function RouteComponent() {
                     className="flex h-full min-w-[280px] flex-col"
                   >
                     <div className="border-b border-black/6 px-5 py-4 dark:border-white/10">
-                      <p className="text-sm text-[var(--sea-ink-soft)]">
+                      <p className="text-sm text-(--sea-ink-soft)">
                         {activeOverlay.author}
                       </p>
-                      <h3 className="mt-2 text-xl font-semibold text-[var(--sea-ink)] dark:text-neutral-100">
+                      <h3 className="mt-2 text-xl font-semibold text-(--sea-ink) dark:text-neutral-100">
                         {activeOverlay.title}
                       </h3>
                     </div>
                     <div className="min-h-0 flex-1 px-5 py-4">
-                      <div className="h-full overflow-auto pr-1 text-sm leading-7 text-[var(--sea-ink-soft)] dark:text-neutral-300 [scrollbar-width:none] [-ms-overflow-style:none]">
+                      <div className="h-full overflow-auto pr-1 text-sm leading-7 text-(--sea-ink-soft) dark:text-neutral-300 [scrollbar-width:none] [-ms-overflow-style:none]">
                         {activeOverlay.content}
                       </div>
                     </div>
-                    <div className="border-t border-black/6 px-5 py-4 text-sm text-[var(--sea-ink-soft)] dark:border-white/10 dark:text-neutral-400">
+                    <div className="border-t border-black/6 px-5 py-4 text-sm text-(--sea-ink-soft) dark:border-white/10 dark:text-neutral-400">
                       {activeOverlay.subtitle}
                     </div>
                   </motion.div>
