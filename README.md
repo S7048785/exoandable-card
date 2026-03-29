@@ -124,13 +124,13 @@ const activeItem = detailId ? items.find((item) => item.id === detailId) : null
 
 Framer Motion 提供了 `layout` prop 和 `layoutId` 用于共享元素转场动画，看起来非常适合这种场景。但在实际应用中遇到了以下问题：
 
-| 问题 | 说明 |
-|------|------|
-| React Compiler 兼容性 | 项目使用了 React Compiler，打包后的转场动画会失效 |
-| 侧边内容无退出动画 | 使用 `layoutId` 时，侧边内容区域（信息面板）无法独立控制退出动画 |
-| 共享元素闪亮屏幕 | 动画过程中会出现"闪亮屏幕"的效果，用户体验不佳 |
-| 生产环境动画失效 | 开发环境正常，但打包后动画完全不触发 |
-| 跨路由 `layoutId` 丢失 | 路由切换后，`layoutId` 无法在组件间保持共享状态 |
+| 问题                   | 说明                                                             |
+| ---------------------- | ---------------------------------------------------------------- |
+| React Compiler 兼容性  | 项目使用了 React Compiler，打包后的转场动画会失效                |
+| 侧边内容无退出动画     | 使用 `layoutId` 时，侧边内容区域（信息面板）无法独立控制退出动画 |
+| 共享元素闪亮屏幕       | 动画过程中会出现"闪亮屏幕"的效果，用户体验不佳                   |
+| 生产环境动画失效       | 开发环境正常，但打包后动画完全不触发                             |
+| 跨路由 `layoutId` 丢失 | 路由切换后，`layoutId` 无法在组件间保持共享状态                  |
 
 鉴于上述问题，最终采用了手动获取 DOM 位置 + `motion` 手动控制 `initial`/`animate` 的方案，绕过 `layoutId` 的限制。
 
@@ -179,6 +179,4 @@ Framer Motion 提供了 `layout` prop 和 `layoutId` 用于共享元素转场动
 
 详细原理请参考 [explore-overlay-analysis.md](./explore-overlay-analysis.md)。
 
-## License
-
-MIT
+Unlicense
