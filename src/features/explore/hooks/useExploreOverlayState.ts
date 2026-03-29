@@ -1,5 +1,9 @@
 import type { ExploreItem } from '@/lib/data'
-import { useMatchRoute, useNavigate, useRouter } from '@tanstack/react-router'
+import {
+  useNavigate,
+  useRouter,
+  useRouterState,
+} from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 export type RectLike = {
@@ -34,10 +38,19 @@ export function useExploreOverlayState({
 }: UseExploreOverlayStateOptions) {
   const navigate = useNavigate()
   const router = useRouter()
-  const matchRoute = useMatchRoute()
-  const detailMatch = matchRoute({ to: '/explore/$id' })
-  const activeItem = detailMatch
-    ? (items.find((item) => item.id === detailMatch.id) ?? null)
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  })
+  const detailId = useMemo(() => {
+    const match = /^\/explore\/([^/]+)$/.exec(pathname)
+    if (!match) {
+      return null
+    }
+
+    return decodeURIComponent(match[1])
+  }, [pathname])
+  const activeItem = detailId
+    ? (items.find((item) => item.id === detailId) ?? null)
     : null
 
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({})
