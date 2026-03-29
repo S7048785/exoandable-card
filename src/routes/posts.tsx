@@ -86,35 +86,26 @@ function RouteComponent() {
                 className="cursor-pointer block"
               >
                 <motion.div
-                  layout
                   layoutId={`card-${card.id}-${id}`}
                   animate={{ opacity: hiddenCardId === card.id ? 0 : 1 }}
                   transition={{ opacity: { duration: 0.15 } }}
                   className="p-4 flex flex-col hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
                 >
                   <div className="flex gap-4 flex-col w-full">
-                    <motion.div layout layoutId={`image-${card.id}-${id}`}>
+                    <motion.div layoutId={`image-${card.id}-${id}`}>
                       <img
-                        width={100}
-                        height={100}
                         src={card.src}
                         alt={card.title}
                         className="h-60 w-full rounded-lg object-cover object-top"
                       />
                     </motion.div>
                     <div className="flex justify-center items-center flex-col">
-                      <motion.h3
-                        layoutId={`title-${card.id}-${id}`}
-                        className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base"
-                      >
+                      <h3 className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base">
                         {card.title}
-                      </motion.h3>
-                      <motion.p
-                        layoutId={`description-${card.id}-${id}`}
-                        className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base"
-                      >
+                      </h3>
+                      <p className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base">
                         {card.description}
-                      </motion.p>
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -125,63 +116,40 @@ function RouteComponent() {
 
         <AnimatePresence initial={false}>
           {activeCard ? (
-            <div className="fixed inset-0 z-50 grid place-items-center p-4 pointer-events-none">
+            <div className="fixed inset-0 z-50 mx-auto  grid place-items-center p-4 pointer-events-none ">
               <motion.div
-                layout
                 layoutId={`card-${activeCard.id}-${id}`}
-                transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                exit={{ opacity: 0, backgroundColor: 'rgba(23, 23, 23, 0)' }}
-                className="pointer-events-auto w-full h-full md:h-fit max-w-[800px] md:max-h-[90%] flex flex-col md:flex-row bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden shadow-2xl"
+                exit={{ width: '30%', height: 240 }}
+                className="pointer-events-auto size-[80%] flex flex-col md:flex-row bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden shadow-2xl"
               >
                 <motion.div
-                  layout
                   layoutId={`image-${activeCard.id}-${id}`}
-                  className="w-full md:w-80 lg:w-80"
+                  className="h-full w-1/2"
                 >
                   <img
-                    width={200}
-                    height={200}
                     src={activeCard.src}
                     alt={activeCard.title}
-                    className="w-full h-80 lg:h-80 object-cover object-top"
+                    className="size-full object-cover object-top"
                   />
                 </motion.div>
 
-                <motion.div
-                  layout
-                  exit={{ opacity: 0, transition: { duration: 0.12 } }}
-                  className="flex-1"
-                >
+                <div className="flex-1 overflow-hidden">
                   <div className="flex justify-between items-start p-4">
                     <div>
-                      <motion.h3
-                        layoutId={`title-${activeCard.id}-${id}`}
-                        exit={{ opacity: 0, transition: { duration: 0.08 } }}
-                        className="font-medium text-neutral-700 dark:text-neutral-200 text-base"
-                      >
+                      <h3 className="font-medium text-neutral-700 dark:text-neutral-200 text-base">
                         {activeCard.title}
-                      </motion.h3>
-                      <motion.p
-                        layoutId={`description-${activeCard.id}-${id}`}
-                        exit={{ opacity: 0, transition: { duration: 0.08 } }}
-                        className="text-neutral-600 dark:text-neutral-400 text-base"
-                      >
+                      </h3>
+                      <p className="text-neutral-600 dark:text-neutral-400 text-base">
                         {activeCard.description}
-                      </motion.p>
+                      </p>
                     </div>
                   </div>
                   <div className="pt-4 relative px-4">
-                    <motion.div
-                      layout
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
-                    >
+                    <div className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
                       {activeCard.content}
-                    </motion.div>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               </motion.div>
             </div>
           ) : null}

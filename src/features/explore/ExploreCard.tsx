@@ -7,6 +7,33 @@ type ExploreCardProps = {
   onOpen: (item: ExploreItem) => void
   onImageRef: (id: string, node: HTMLDivElement | null) => void
 }
+type ExploreCardListProps = {
+  exploreItems: ExploreItem[]
+  hiddenId: string | null
+  handleOpen: (item: ExploreItem) => void
+  registerCardNode: (id: string, node: HTMLDivElement | null) => void
+}
+
+export function ExploreCardList({
+  exploreItems,
+  hiddenId,
+  handleOpen,
+  registerCardNode,
+}: ExploreCardListProps) {
+  return (
+    <section className="columns-2 gap-4 md:columns-3">
+      {exploreItems.map((item) => (
+        <ExploreCard
+          key={item.id}
+          item={item}
+          hiddenImage={hiddenId === item.id}
+          onOpen={handleOpen}
+          onImageRef={registerCardNode}
+        />
+      ))}
+    </section>
+  )
+}
 
 export function ExploreCard({
   item,
