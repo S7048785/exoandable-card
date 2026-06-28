@@ -1,9 +1,6 @@
-import type { ExploreItem } from '@/lib/data'
-import { AnimatePresence, motion } from 'motion/react'
-import type {
-  ExploreOverlayLayout,
-  RectLike,
-} from './hooks/useExploreOverlayState'
+import type {ExploreItem} from '@/lib/data'
+import {AnimatePresence, motion} from 'motion/react'
+import type {ExploreOverlayLayout, RectLike} from './types'
 
 type ExploreOverlayProps = {
   item: ExploreItem | null
@@ -11,6 +8,7 @@ type ExploreOverlayProps = {
   targetLayout: ExploreOverlayLayout | null
   isClosing: boolean
   onClose: () => void
+  onCloseAnimationComplete: () => void
 }
 
 export function ExploreOverlay({
@@ -19,6 +17,7 @@ export function ExploreOverlay({
   targetLayout,
   isClosing,
   onClose,
+                                 onCloseAnimationComplete,
 }: ExploreOverlayProps) {
   const activeOverlay = item && originRect && targetLayout
 
@@ -85,6 +84,13 @@ export function ExploreOverlay({
               ease: [0.22, 1, 0.36, 1],
             }}
             className="absolute overflow-hidden bg-white shadow-[0_24px_80px_rgba(15,23,42,0.2)] dark:bg-neutral-900"
+            onAnimationComplete={() => {
+              // Cleanup is tied to Motion's completion event instead of a
+              // timeout, so animation duration changes do not desync state.
+              if (isClosing) {
+                onCloseAnimationComplete()
+              }
+            }}
             onPointerDown={(event) => {
               event.stopPropagation()
             }}

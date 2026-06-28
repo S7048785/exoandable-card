@@ -1,5 +1,5 @@
-import type { ExploreItem } from '@/lib/data'
-import { useExploreCard } from './hooks/useExploreCard'
+import type {ExploreItem} from '@/lib/data'
+import {memo, useCallback} from 'react'
 
 type ExploreCardProps = {
   item: ExploreItem
@@ -35,18 +35,22 @@ export function ExploreCardList({
   )
 }
 
-export function ExploreCard({
+function ExploreCardComponent({
   item,
   hiddenImage,
   onOpen,
   onImageRef,
 }: ExploreCardProps) {
-  const { handleClick, handleImageRef, imageVisibility } = useExploreCard({
-    item,
-    hiddenImage,
-    onOpen,
-    onImageRef,
-  })
+  const handleClick = useCallback(() => {
+    onOpen(item)
+  }, [item, onOpen])
+
+  const handleImageRef = useCallback(
+      (node: HTMLDivElement | null) => {
+        onImageRef(item.id, node)
+      },
+      [item.id, onImageRef],
+  )
 
   return (
     <article className="mb-4 inline-block w-full">
@@ -55,7 +59,7 @@ export function ExploreCard({
           <div
             ref={handleImageRef}
             className="overflow-hidden"
-            style={{ visibility: imageVisibility }}
+            style={{visibility: hiddenImage ? 'hidden' : 'visible'}}
           >
             <img
               src={item.image}
@@ -78,3 +82,5 @@ export function ExploreCard({
     </article>
   )
 }
+
+export const ExploreCard = memo(ExploreCardComponent)

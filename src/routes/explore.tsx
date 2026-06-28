@@ -1,8 +1,8 @@
-import { ExploreCardList } from '@/features/explore/ExploreCard'
-import { ExploreOverlay } from '@/features/explore/ExploreOverlay'
-import { useExploreOverlayState } from '@/features/explore/hooks/useExploreOverlayState'
-import { exploreItems } from '@/lib/data'
-import { createFileRoute } from '@tanstack/react-router'
+import {ExploreCardList} from '@/features/explore/ExploreCard'
+import {ExploreOverlay} from '@/features/explore/ExploreOverlay'
+import {useExploreOverlayState} from '@/features/explore/hooks/useExploreOverlayState'
+import {exploreItems} from '@/lib/data'
+import {createFileRoute} from '@tanstack/react-router'
 
 export const Route = createFileRoute('/explore')({
   component: RouteComponent,
@@ -18,6 +18,7 @@ function RouteComponent() {
     originRect,
     targetLayout,
     isClosing,
+    handleCloseAnimationComplete,
   } = useExploreOverlayState({
     items: exploreItems,
   })
@@ -36,6 +37,7 @@ function RouteComponent() {
         targetLayout={targetLayout}
         isClosing={isClosing}
         onClose={handleClose}
+        onCloseAnimationComplete={handleCloseAnimationComplete}
       />
     </main>
   )
